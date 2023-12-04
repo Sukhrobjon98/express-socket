@@ -15,9 +15,11 @@
     "ts-node": "^10.9.1"
   },
   "dependencies": {
+    "@types/mongoose": "^5.11.97",
     "@types/node": "^20.10.2",
     "@types/socket.io": "^3.0.2",
     "dotenv": "^16.3.1",
+    "mongoose": "^8.0.2",
     "socket.io": "^4.7.2"
   }
 }
