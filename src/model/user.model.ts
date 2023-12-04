@@ -24,7 +24,7 @@ const userSchema = new mongoose.Schema<IUser>(
     file: {
       type: String,
       default: null,
-    },  
+    },
   },
   {
     versionKey: false,

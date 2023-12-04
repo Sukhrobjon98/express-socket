@@ -9,6 +9,7 @@ interface IMessage extends Document {
   message_from: Schema.Types.ObjectId;
   message_to: Schema.Types.ObjectId;
   message_type: EMessage;
+  message_read: boolean;
 }
 
 const messageSchema = new mongoose.Schema<IMessage>(
@@ -18,6 +19,10 @@ const messageSchema = new mongoose.Schema<IMessage>(
       required: true,
     },
     message_type: EMessage,
+    message_read: {
+      type: Boolean,
+      default: false,
+    },
     message_from: [
       {
         type: Schema.Types.ObjectId,
@@ -34,4 +39,4 @@ const messageSchema = new mongoose.Schema<IMessage>(
 
 const messsage = mongoose.model<IMessage>("message", messageSchema);
 
-export default messsage
+export default messsage;
