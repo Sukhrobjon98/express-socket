@@ -6,45 +6,39 @@ import mongoose from "mongoose";
 import { UserSocketController } from "./socket/users/user.socket.controller";
 import ErrorMiddleware from "./middlewares/error.middleware";
 import cors from "cors";
+import path from "path";
 
 export class App {
   app: http.Server;
   port: number;
   socketIo: Server;
+  apps: express.Application;
 
   constructor(routers: IRouter[]) {
-    this.port = 3200;
+    this.port = 4000;
+    this.apps = express();
     this.app = http.createServer(express());
-    this.socketIo = new Server(this.app);
-    this.listen();
+    this.socketIo = new Server(this.app, {
+      cors: {
+        origin: "*",
+      },
+    });
     this.initMiddleware();
     this.initErrorHandling();
     this.initSocket();
     this.initDatabase();
+    this.listen();
   }
 
   initMiddleware() {
-    const expressApp = express();
-    this.app.on("request", expressApp);
-    expressApp.use(express.json());
-    expressApp.use(express.urlencoded({ extended: true }));
-    expressApp.use((req: Request, res: Response, next: NextFunction) => {
-      res.setHeader("Access-Control-Allow-Origin", "*");
-      res.setHeader("Access-Control-Allow-Credentials", "true");
-      res.setHeader("Access-Control-Max-Age", "1800");
-      res.setHeader("Access-Control-Allow-Headers", "content-type");
-      res.setHeader(
-        "Access-Control-Allow-Methods",
-        "PUT, POST, GET, DELETE, PATCH, OPTIONS"
-      );
-      next();
-    });
-    expressApp.use(cors());
+    this.apps.use(cors());
+    this.apps.use(express.json());
+    this.apps.use(express.urlencoded({ extended: true }));
+    this.apps.use(express.static(path.join(process.cwd(), "uploads")));
   }
 
   initErrorHandling() {
-    this.app.on("request", express());
-    express().use(ErrorMiddleware);
+    this.apps.use(ErrorMiddleware);
   }
 
   initSocket() {

@@ -14,11 +14,11 @@ export class UserSocketController {
   async userLogin() {
     this.socket.on(
       "users:login",
-      this.userSocketService.loginSocket
+      this.userSocketService.loginSocket,
     );
   }
 
   async usersRegister() {
-    this.socket.on("users:regsiter", this.userSocketService.registerSocket);
+    this.socket.on("users:register", this.userSocketService.registerSocket);
   }
 }
